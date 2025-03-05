@@ -3,7 +3,7 @@ const generateApiKey = require("../utils/apiKeyGenerator");
 
 exports.googleCallback = (req, res) => {
   console.log("User authenticated:", req.user); // Debug log
-  res.redirect("/api/auth/register-app");
+  res.redirect("https://website-analytics-api-1.onrender.com/api-docs");
 };
 
 exports.registerApp = async (req, res) => {
