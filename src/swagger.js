@@ -6,8 +6,8 @@ const doc = {
     title: "My API",
     description: "API documentation for My Application",
   },
-  host: "localhost:3000", // Update this to your actual host
-  schemes: ["http"], // Use 'https' in production
+  host: "https://website-analytics-api-1.onrender.com", // Update this to your actual host
+  schemes: ["https"], // Use 'https' in production
   basePath: "/api", // Base path for your API
   consumes: ["application/json"],
   produces: ["application/json"],
@@ -17,7 +17,7 @@ const doc = {
       type: "apiKey",
       in: "header",
       name: "Authorization",
-      description: "Enter your bearer token in the format `Bearer <token>`",
+      description: "Enter your cookiee in the format `cooke(id) <value>`",
     },
   },
 };

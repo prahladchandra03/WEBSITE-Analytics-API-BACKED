@@ -8,14 +8,14 @@
   "host": "https://website-analytics-api-1.onrender.com",
   "basePath": "/api",
   "schemes": [
-    "http"
+    "https"
   ],
   "securityDefinitions": {
     "BearerAuth": {
       "type": "apiKey",
       "in": "header",
       "name": "Authorization",
-      "description": "Enter your bearer token in the format `Bearer <token>`"
+      "description": "Enter your cookiee in the format `cooke(id) <value>`"
     }
   },
   "consumes": [
