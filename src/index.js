@@ -43,9 +43,29 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // CORS configuration
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000","https://website-analytics-api-1.onrender.com/", // Replace with frontend URL
+//     credentials: true,
+//     methods: "GET, POST, PUT, DELETE",
+//   })
+// );
+
+
+const allowedOrigins = [
+  "http://localhost:3000", // Development URL
+  "https://website-analytics-api-1.onrender.com", // Production URL
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with frontend URL
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: "GET, POST, PUT, DELETE",
   })
