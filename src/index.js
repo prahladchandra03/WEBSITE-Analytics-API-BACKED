@@ -60,8 +60,25 @@ app.use(
 // Connect to the database
 connectDB();
 
+
+
+
+
+
+
+
+
+
 // Swagger documentation route
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const swaggerOptions = {
+  swaggerOptions: {
+    url: process.env.SWAGGER_BASE_URL  // Use env var or default
+  }
+};
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
+
 
 // Session configuration
 app.use(
