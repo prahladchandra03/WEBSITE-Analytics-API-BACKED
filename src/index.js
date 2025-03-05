@@ -11,25 +11,18 @@ const swaggerUi = require("swagger-ui-express");
 
 const cors = require("cors");
 const morgan = require("morgan");
-
-
-
-
-const swaggerDocument = require("./swagger-output.json");
-
 const path = require("path");
 const fs = require("fs");
-// Load environment variables
 
+dotenv.config();
+
+// Load Swagger document
 const swaggerFilePath = path.join(__dirname, "swagger-output.json");
 if (!fs.existsSync(swaggerFilePath)) {
   console.error("swagger-output.json not found at:", swaggerFilePath);
   process.exit(1);
 }
-
-dotenv.config();
-
-const app = express();
+const swaggerDocument = require(swaggerFilePath);
 
 // Validate required environment variables
 if (!process.env.SESSION_SECRET || !process.env.MONGO_URI) {
@@ -38,20 +31,11 @@ if (!process.env.SESSION_SECRET || !process.env.MONGO_URI) {
 }
 
 // Initialize Express app
-
+const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
 // CORS configuration
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000","https://website-analytics-api-1.onrender.com/", // Replace with frontend URL
-//     credentials: true,
-//     methods: "GET, POST, PUT, DELETE",
-//   })
-// );
-
-
 const allowedOrigins = [
   "http://localhost:3000", // Development URL
   "https://website-analytics-api-1.onrender.com", // Production URL
@@ -60,9 +44,11 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin)) {
+      // Allow undefined origins (like Postman or browser extensions) during development
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.error("Blocked by CORS:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
@@ -71,10 +57,10 @@ app.use(
   })
 );
 
-// Database connection
+// Connect to the database
 connectDB();
 
-// Swagger documentation
+// Swagger documentation route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Session configuration
@@ -96,12 +82,18 @@ app.use(
 require("./config/passport");
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Routes
 app.use("/api", authRoutes);
 app.use("/api", analyticsRoutes);
 
 // Centralized error handling
 app.use(errorHandler);
+
+// Fallback for invalid routes
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
