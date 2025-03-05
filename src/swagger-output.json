@@ -5,7 +5,7 @@
     "description": "API documentation for My Application",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "https://website-analytics-api-1.onrender.com",
   "basePath": "/api",
   "schemes": [
     "http"
