@@ -6,7 +6,7 @@ const doc = {
     title: "My API",
     description: "API documentation for My Application",
   },
-  host: "https://website-analytics-api-1.onrender.com", // Update this to your actual host
+  host: "website-analytics-api-1.onrender.com", // Update this to your actual host
   schemes: ["https"], // Use 'https' in production
   basePath: "/api", // Base path for your API
   consumes: ["application/json"],
