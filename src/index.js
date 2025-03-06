@@ -9,7 +9,6 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const connectDB = require("./utils/db");
 const swaggerUi = require("swagger-ui-express");
 
-const jwtAuth = require("./middleware/authMiddeleware");
 
 
 
