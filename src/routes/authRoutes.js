@@ -23,9 +23,10 @@ router.get(
 
 // API Key Management Routes
 
-router.post("/auth/registerApp", authController.registerApp);
-router.get("/auth/getApiKey", authController.getApiKey);
-router.post("/auth/revokeApiKey", authController.revokeApiKey);
-router.get("/auth/failure", authController.authFailure);
+router.post("/auth/registerApp", validateRegisterApp, authController.registerApp);
 
+console.log(typeof authController.getApiKey); // Should log "function"
+console.log(typeof isAuthenticated); // Should log "function"
+router.get("/auth/getApiKey", isAuthenticated, authController.getApiKey);
+router.post("/auth/revokeApiKey", isAuthenticated, authController.revokeApiKey);
 module.exports = router;
