@@ -60,15 +60,6 @@ app.use(
 // Connect to the database
 connectDB();
 
-
-
-
-
-
-
-
-
-
 // Swagger documentation route
 
 const swaggerOptions = {
