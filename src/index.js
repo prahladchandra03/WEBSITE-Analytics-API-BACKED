@@ -79,7 +79,7 @@ const swaggerOptions = {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
 
-app.use("/api/protected", jwtAuth, protectedRoutes);
+
 // Session configuration
 app.use(
   session({
