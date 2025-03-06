@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "My API",
-    "description": "API documentation for My Application",
+    "description": "API documentation for My Application. This API handles user authentication via Google OAuth and provides endpoints for managing API keys and analytics data.",
     "version": "1.0.0"
   },
   "host": "website-analytics-api-1.onrender.com",
@@ -10,14 +10,7 @@
   "schemes": [
     "https"
   ],
-  "securityDefinitions": {
-    "BearerAuth": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "Authorization",
-      "description": "Enter your cookiee in the format `cooke(id) <value>`"
-    }
-  },
+  "securityDefinitions": {},
   "consumes": [
     "application/json"
   ],
@@ -25,7 +18,7 @@
     "application/json"
   ],
   "paths": {
-    "/google/login": {
+    "/auth/google/login": {
       "get": {
         "description": "",
         "responses": {
@@ -35,7 +28,7 @@
         }
       }
     },
-    "/google/callback": {
+    "/auth/google/callback": {
       "get": {
         "description": "",
         "responses": {
@@ -45,7 +38,7 @@
         }
       }
     },
-    "/register-app": {
+    "/auth/register-app": {
       "post": {
         "description": "",
         "parameters": [
@@ -72,13 +65,16 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         }
       }
     },
-    "/api-key": {
+    "/auth/api-key": {
       "get": {
         "description": "",
         "responses": {
@@ -97,7 +93,7 @@
         }
       }
     },
-    "/revoke-api-key": {
+    "/auth/revoke-api-key": {
       "post": {
         "description": "",
         "parameters": [
@@ -133,7 +129,7 @@
         }
       }
     },
-    "/failure": {
+    "/auth/failure": {
       "get": {
         "description": "",
         "responses": {
