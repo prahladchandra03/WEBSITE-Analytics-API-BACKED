@@ -8,22 +8,22 @@ const router = express.Router();
 
 // Google OAuth Routes
 router.get(
-    "/google/login",
-    passport.authenticate("google", { scope: ["profile", "email"] })
+  "/auth/google/login", // Fixed: Removed the "=" sign
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 router.get(
-    "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/api/auth/failure" }),
-    authController.googleCallback
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/auth/failure" }), // Fixed: Removed "/api" prefix
+  authController.googleCallback
 );
 
 // API Key Management Routes
-router.post('/register-app', validateRegisterApp, authController.registerApp);
-router.get('/api-key', isAuthenticated, authController.getApiKey);
-router.post('/revoke-api-key', isAuthenticated, authController.revokeApiKey);
+router.post('/auth/register-app', isAuthenticated, validateRegisterApp, authController.registerApp);
+router.get('/auth/api-key', isAuthenticated, authController.getApiKey);
+router.post('/auth/revoke-api-key', isAuthenticated, authController.revokeApiKey);
 
 // Failure Route
-router.get('/failure', authController.authFailure);
+router.get('/auth/failure', authController.authFailure);
 
 module.exports = router;
