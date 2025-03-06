@@ -1,12 +1,13 @@
-// module.exports = isAuthenticated;const jwt = require('jsonwebtoken');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-const isAuthenticated= async (req, res, next) => {
-  const token = req.header('Authorization').replace('Bearer ', '');
+const isAuthenticated = async (req, res, next) => {
+  const token = req.header("Authorization").replace("Bearer ", "");
 
   if (!token) {
-    return res.status(401).json({ message: 'Authentication token is required' });
+    return res
+      .status(401)
+      .json({ message: "Authentication token is required" });
   }
 
   try {
@@ -14,15 +15,16 @@ const isAuthenticated= async (req, res, next) => {
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return res.status(401).json({ message: 'User not authenticated' });
+      return res.status(401).json({ message: "User not authenticated" });
     }
 
     req.user = user;
     next();
   } catch (err) {
-    console.error('Authentication error:', err);
-    res.status(401).json({ message: 'User not authenticated', error: err.message });
+    console.error("Authentication error:", err);
+    res
+      .status(401)
+      .json({ message: "User not authenticated", error: err.message });
   }
 };
-
 module.exports = isAuthenticated;

@@ -5,7 +5,6 @@ const authController = require("../controllers/authController");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { validateRegisterApp } = require("../middleware/validateInput");
 
-
 const jwt = require("jsonwebtoken");
 
 router.post("/auth/login", (req, res) => {
@@ -15,9 +14,13 @@ router.post("/auth/login", (req, res) => {
   const user = { id: 1, email: "user@example.com" }; // Example user
 
   // Generate a JWT token
-  const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
-    expiresIn: "1h", // Token expiration time
-  });
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1h", // Token expiration time
+    }
+  );
 
   // Send the token in the response
   res.json({ token });
@@ -37,7 +40,11 @@ router.get(
 
 // API Key Management Routes
 
-router.post("/auth/registerApp", validateRegisterApp, authController.registerApp);
+router.post(
+  "/auth/registerApp",
+  validateRegisterApp,
+  authController.registerApp
+);
 
 console.log(typeof authController.getApiKey); // Should log "function"
 console.log(typeof isAuthenticated); // Should log "function"

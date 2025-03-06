@@ -7,7 +7,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:'https://website-analytics-api-1.onrender.com/api/auth/google/callback',
+      callbackURL:
+        "https://website-analytics-api-1.onrender.com/api/auth/google/callback",
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
@@ -36,7 +37,7 @@ passport.serializeUser((user, done) => {
 // Deserialize user
 passport.deserializeUser((id, done) => {
   // Fetch user from the database using the id
-  const user = { id, email: 'user@example.com', name: 'John Doe' }; // Replace with actual DB call
+  const user = { id, email: "user@example.com", name: "John Doe" }; // Replace with actual DB call
   done(null, user);
 });
 

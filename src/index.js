@@ -25,7 +25,8 @@ const swaggerDocument = require(swaggerFilePath);
 
 // Validate required environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/defaultDB";
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://localhost:27017/defaultDB";
 if (!JWT_SECRET || !MONGO_URI) {
   console.error("Missing required environment variables.");
   process.exit(1);
@@ -71,19 +72,25 @@ const swaggerOptions = {
     credentials: "include", // Include cookies in requests
   },
 };
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, swaggerOptions)
+);
 
 // Initialize Passport
 require("./config/passport");
 app.use(passport.initialize());
 
 // Use express-session middleware
-app.use(session({
-  secret: process.env.SESSION_SECRET  ,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // Set to true if using HTTPS
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set to true if using HTTPS
+  })
+);
 
 // Initialize Passport session
 app.use(passport.session());
@@ -103,7 +110,9 @@ app.use((req, res) => {
 // Global error handler for unhandled exceptions
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err.message);
-  res.status(err.status || 500).json({ error: err.message || "Internal Server Error" });
+  res
+    .status(err.status || 500)
+    .json({ error: err.message || "Internal Server Error" });
 });
 
 // Start the server

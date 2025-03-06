@@ -3,7 +3,8 @@ const swaggerAutogen = require("swagger-autogen")();
 const doc = {
   info: {
     title: "Website Analytics API",
-    description: "API documentation for the Website Analytics Application. This API handles user authentication via Google OAuth and provides endpoints for managing API keys and analytics data.",
+    description:
+      "API documentation for the Website Analytics Application. This API handles user authentication via Google OAuth and provides endpoints for managing API keys and analytics data.",
     version: "1.0.0",
   },
   host: "website-analytics-api-1.onrender.com", // Update this to your actual host

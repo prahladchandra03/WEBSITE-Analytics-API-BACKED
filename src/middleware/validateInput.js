@@ -1,5 +1,4 @@
 const { body, validationResult } = require("express-validator");
-
 const validateRegisterApp = [
   // Validate appName
   body("appName")
