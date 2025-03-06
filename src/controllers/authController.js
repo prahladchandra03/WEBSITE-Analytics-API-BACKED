@@ -1,12 +1,13 @@
 const APIKey = require("../models/apiKey");
 const generateApiKey = require("../utils/apiKeyGenerator");
 
+// Google OAuth callback handler
 exports.googleCallback = (req, res) => {
   console.log("User authenticated:", req.user); // Debug log
-  res.redirect("https://website-analytics-api-1.onrender.com/api-docs");
+  res.redirect("https://website-analytics-api-1.onrender.com/api-docs"); // Redirect to API documentation
 };
 
-// Register a new app and generate API Key
+// Register a new app and generate an API key for the authenticated user
 exports.registerApp = async (req, res) => {
   const { appName, appUrl } = req.body;
 
@@ -48,7 +49,7 @@ exports.registerApp = async (req, res) => {
 // Get the API key for a user
 exports.getApiKey = async (req, res) => {
   try {
-    const apiKey = await APIKey.findOne({ userId: req.user.id }); // Use req.user.id
+    const apiKey = await APIKey.findOne({ userId: req.user.id }); // Use req.user.id to find the API key for the authenticated user
     if (!apiKey) {
       return res.status(404).json({ message: "API key not found" });
     }
@@ -63,6 +64,7 @@ exports.getApiKey = async (req, res) => {
 exports.revokeApiKey = async (req, res) => {
   const { apiKey } = req.body;
 
+  // Check if the API key is provided
   if (!apiKey) {
     return res.status(400).json({ message: "API key is required" });
   }
