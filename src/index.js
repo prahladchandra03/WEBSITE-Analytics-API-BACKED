@@ -2,6 +2,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const passport = require("passport");
+const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
 const errorHandler = require("./middleware/errorHandler");
 const analyticsRoutes = require("./routes/analyticsRoutes");
@@ -75,6 +76,17 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOp
 // Initialize Passport
 require("./config/passport");
 app.use(passport.initialize());
+
+// Use express-session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET  ,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+// Initialize Passport session
+app.use(passport.session());
 
 // Routes
 app.use("/api", authRoutes);
