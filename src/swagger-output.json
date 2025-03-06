@@ -123,7 +123,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "authorization",
+            "name": "Authorization",
             "in": "header",
             "type": "string"
           }
@@ -149,7 +149,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "authorization",
+            "name": "Authorization",
             "in": "header",
             "type": "string"
           },

@@ -1,6 +1,6 @@
 // module.exports = isAuthenticated;const jwt = require('jsonwebtoken');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/User');
 
 const isAuthenticated= async (req, res, next) => {
   const token = req.header('Authorization').replace('Bearer ', '');
