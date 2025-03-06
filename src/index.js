@@ -1,17 +1,12 @@
+// src/app.js
 const express = require("express");
 const dotenv = require("dotenv");
-const session = require("express-session");
 const passport = require("passport");
 const authRoutes = require("./routes/authRoutes");
 const errorHandler = require("./middleware/errorHandler");
-const MongoStore = require("connect-mongo");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const connectDB = require("./utils/db");
 const swaggerUi = require("swagger-ui-express");
-
-
-
-
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
@@ -28,9 +23,9 @@ if (!fs.existsSync(swaggerFilePath)) {
 const swaggerDocument = require(swaggerFilePath);
 
 // Validate required environment variables
-const SESSION_SECRET = process.env.SESSION_SECRET || "defaultSecret";
+const JWT_SECRET = process.env.JWT_SECRET;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/defaultDB";
-if (!SESSION_SECRET || !MONGO_URI) {
+if (!JWT_SECRET || !MONGO_URI) {
   console.error("Missing required environment variables.");
   process.exit(1);
 }
@@ -77,27 +72,9 @@ const swaggerOptions = {
 };
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
-
-
-// Session configuration
-app.use(
-  session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: MONGO_URI }),
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  })
-);
-
 // Initialize Passport
 require("./config/passport");
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use("/api", authRoutes);

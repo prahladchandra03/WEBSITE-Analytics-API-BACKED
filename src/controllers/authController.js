@@ -9,6 +9,13 @@ exports.googleCallback = (req, res) => {
   res.redirect("https://website-analytics-api-1.onrender.com/api-docs");
 };
 
+
+
+
+
+
+
+
 /**
  * Register a new app and generate an API key
  */
