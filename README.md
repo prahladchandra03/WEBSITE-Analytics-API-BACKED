@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # website-analytics-api
 # Website Analytics API
 
@@ -145,3 +146,6 @@ body    ```json
 ## License
 
 This project is licensed under the MIT License.
+=======
+# WEBSITE-Analytics-API-BACKED
+>>>>>>> origin/master
