@@ -5,22 +5,11 @@ const isAuthenticated = require("../middleware/isAuthenticated");
 const { validateRegisterApp } = require("../middleware/validateInput");
 const { generateToken } = require('../middleware/isAuthenticated');
 
-// Example usage when user logs in
-router.post('/login', async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  
-  if (!user || !user.isPasswordValid(req.body.password)) {
-    return res.status(400).json({ message: 'Invalid credentials' });
-  }
-
-  const token = generateToken(user); // Generate a token
-  res.json({ token });
-});
 
 
 const router = express.Router();
 
-
+// Example usage when user logs in
 router.post('/login', async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   
