@@ -80,29 +80,7 @@ exports.revokeApiKey = async (req, res) => {
       .json({ message: "Error revoking API key", error: err.message });
   }
 };
-exports.revokeApiKey = async (req, res) => {
-  const { apiKey } = req.body;
 
-  if (!apiKey) {
-    return res.status(400).json({ message: "API key is required" });
-  }
-
-  try {
-    const deletedKey = await APIKey.findOneAndDelete({
-      apiKey,
-      userId: req.user._id,
-    });
-    if (!deletedKey) {
-      return res.status(404).json({ message: "API key not found" });
-    }
-    res.json({ message: "API key revoked successfully" });
-  } catch (err) {
-    console.error("Error revoking API key:", err);
-    res
-      .status(500)
-      .json({ message: "Error revoking API key", error: err.message });
-  }
-};
 
 exports.authFailure = (req, res) => {
   res.status(400).json({ message: "Google OAuth failed" });

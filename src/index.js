@@ -9,6 +9,10 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const connectDB = require("./utils/db");
 const swaggerUi = require("swagger-ui-express");
 
+const jwtAuth = require("./middleware/authMiddeleware");
+
+
+
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
@@ -25,7 +29,9 @@ if (!fs.existsSync(swaggerFilePath)) {
 const swaggerDocument = require(swaggerFilePath);
 
 // Validate required environment variables
-if (!process.env.SESSION_SECRET || !process.env.MONGO_URI) {
+const SESSION_SECRET = process.env.SESSION_SECRET || "defaultSecret";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/defaultDB";
+if (!SESSION_SECRET || !MONGO_URI) {
   console.error("Missing required environment variables.");
   process.exit(1);
 }
@@ -57,27 +63,30 @@ app.use(
   })
 );
 
+// Handle preflight CORS requests
+app.options("*", cors());
+
 // Connect to the database
 connectDB();
 
 // Swagger documentation route
-
 const swaggerOptions = {
   swaggerOptions: {
-    url: process.env.SWAGGER_BASE_URL  // Use env var or default
-  }
+    url: process.env.SWAGGER_BASE_URL || "http://localhost:3000/api-docs", // Default Swagger base URL
+    credentials: "include", // Include cookies in requests
+  },
 };
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
-
+app.use("/api/protected", jwtAuth, protectedRoutes);
 // Session configuration
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    store: MongoStore.create({ mongoUrl: MONGO_URI }),
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
@@ -101,6 +110,12 @@ app.use(errorHandler);
 // Fallback for invalid routes
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
+});
+
+// Global error handler for unhandled exceptions
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err.message);
+  res.status(err.status || 500).json({ error: err.message || "Internal Server Error" });
 });
 
 // Start the server

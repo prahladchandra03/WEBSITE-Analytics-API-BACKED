@@ -13,8 +13,18 @@ const doc = {
   consumes: ["application/json"],
   produces: ["application/json"],
   securityDefinitions: {
-   
+    BearerAuth: {
+      type: "apiKey",
+      in: "header",
+      name: "Authorization",
+      description: "Enter JWT token in the format 'Bearer <your-token>'",
+    },
   },
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
 };
 
 // Output file for Swagger documentation
