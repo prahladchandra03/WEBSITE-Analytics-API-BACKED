@@ -10,7 +10,14 @@
   "schemes": [
     "https"
   ],
-  "securityDefinitions": {},
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Enter JWT token in the format 'Bearer <your-token>'"
+    }
+  },
   "consumes": [
     "application/json"
   ],
@@ -42,6 +49,11 @@
       "post": {
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -77,6 +89,13 @@
     "/auth/api-key": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -97,6 +116,11 @@
       "post": {
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -281,5 +305,10 @@
         }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
 }
